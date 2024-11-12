@@ -1,1 +1,1 @@
-# charting.github.io
+# charting
