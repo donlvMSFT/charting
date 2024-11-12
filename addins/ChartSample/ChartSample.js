@@ -4,8 +4,6 @@ Office.onReady((info) => {
   console.log("Office is Ready!");
 
   if (info.host === Office.HostType.Excel) {
-    document.getElementById("sideload-msg").style.display = "none";
-    document.getElementById("app-body").style.display = "flex";
     document.getElementById("setup").onclick = setup;
   }
 });
