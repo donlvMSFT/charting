@@ -1,11 +1,8 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
- * See LICENSE in the project root for license information.
- */
-
-/* global console, document, Excel, Office */
+Office.initialize = () => {};
 
 Office.onReady((info) => {
+  console.log("Office is Ready!");
+
   if (info.host === Office.HostType.Excel) {
     document.getElementById("sideload-msg").style.display = "none";
     document.getElementById("app-body").style.display = "flex";
@@ -13,7 +10,7 @@ Office.onReady((info) => {
   }
 });
 
-export async function setup() {
+async function setup() {
   try {
       await Excel.run(async (context) => {
       context.workbook.worksheets.getItemOrNullObject("Sample").delete();
