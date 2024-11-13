@@ -44,11 +44,13 @@ async function test() {
       await Excel.run(async (context) => {
         const sheet = context.workbook.worksheets.getActiveWorksheet();
 
+        let range = sheet.getRange("A1");
+        range.format.fill.color = "yellow";
+
         let rangeAreas = sheet.getRanges("D6:H6,J6:J7");
         rangeAreas.select();
     
-        let range = sheet.getRange("A1");
-        range.format.fill.color = "yellow";
+        range.format.fill.color = "green";
     
         await context.sync();
       });
