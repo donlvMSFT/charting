@@ -59,9 +59,10 @@ async function test() {
         await context.sync();
       });
   } catch (error) {
-    alert(error);
+    const sheet = context.workbook.worksheets.getActiveWorksheet();
     let range = sheet.getRange("A10");
-    range.values = [[error]];
+    range.values = [[error.message]];
+    await context.sync();
   }
 }
   
