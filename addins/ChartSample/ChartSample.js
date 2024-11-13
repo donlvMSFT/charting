@@ -75,7 +75,7 @@ async function test() {
   }
 }
 
-async function test() {
+async function error() {
   try {
       await Excel.run(async (context) => {
         const sheet = context.workbook.worksheets.getActiveWorksheet();
