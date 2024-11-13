@@ -59,7 +59,9 @@ async function test() {
         await context.sync();
       });
   } catch (error) {
-    console.error(error);
+    alert(error);
+    let range = sheet.getRange("A10");
+    range.values = [[error]];
   }
 }
   
