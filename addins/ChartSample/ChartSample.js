@@ -47,10 +47,14 @@ async function test() {
         let range = sheet.getRange("A1");
         range.format.fill.color = "yellow";
 
-        let rangeAreas = sheet.getRanges("D6:H6,J6:J7");
+        let rangeAreas = sheet.getRanges("A2:E2,A7:E7");
+        rangeAreas.clear();
+        await context.sync();
+
         rangeAreas.select();
-    
-        range.format.fill.color = "green";
+
+        let range1 = sheet.getRange("B1");
+        range1.format.fill.color = "green";
     
         await context.sync();
       });
