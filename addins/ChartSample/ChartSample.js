@@ -42,15 +42,15 @@ async function setup() {
 async function test() {
   try {
       await Excel.run(async (context) => {
-      const sheet = context.workbook.worksheets.getActiveWorksheet();
- 
-      let rangeAreas = sheet.getUsedRangeAreasOrNullObject();
-      rangeAreas.load("address");
-      await context.sync();
-      console.log(rangeAreas.address);
- 
-      rangeAreas.select();
-      console.log("Your code goes here");
+        const sheet = context.workbook.worksheets.getActiveWorksheet();
+
+        let rangeAreas = sheet.getRanges("D6:H6,J6:J7");
+        rangeAreas.select();
+    
+        let range = sheet.getRange("A1");
+        range.format.fill.color = "yellow";
+    
+        await context.sync();
       });
   } catch (error) {
     console.error(error);
