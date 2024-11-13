@@ -5,6 +5,7 @@ Office.onReady((info) => {
 
   if (info.host === Office.HostType.Excel) {
     document.getElementById("setup").onclick = setup;
+    document.getElementById("test").onclick = test;
   }
 });
 
@@ -32,6 +33,24 @@ async function setup() {
   
       sheet.activate();
       await context.sync();
+      });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function test() {
+  try {
+      await Excel.run(async (context) => {
+      const sheet = context.workbook.worksheets.getActiveWorksheet();
+ 
+      let rangeAreas = sheet.getUsedRangeAreasOrNullObject();
+      rangeAreas.load("address");
+      await context.sync();
+      console.log(rangeAreas.address);
+ 
+      rangeAreas.select();
+      console.log("Your code goes here");
       });
   } catch (error) {
     console.error(error);
