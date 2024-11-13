@@ -6,6 +6,7 @@ Office.onReady((info) => {
   if (info.host === Office.HostType.Excel) {
     document.getElementById("setup").onclick = setup;
     document.getElementById("test").onclick = test;
+    document.getElementById("error").onclick = error;
   }
 });
 
@@ -63,7 +64,36 @@ async function test() {
       await Excel.run(async (context) => {
         const sheet = context.workbook.worksheets.getActiveWorksheet();
         let range = sheet.getRange("A10");
-        range.values = [[error.message]];
+        range.values = [["Error"]];
+        let range1 = sheet.getRange("A11");
+        range1.values = [[error.message]];
+        await context.sync();
+      });
+    } catch (innerError) {
+      console.error("Failed to log error to Excel:", innerError);
+    }
+  }
+}
+
+async function test() {
+  try {
+      await Excel.run(async (context) => {
+        const sheet = context.workbook.worksheets.getActiveWorksheet();
+  
+        let expensesTable = sheet.tables.add("A1:E1", true);
+        expensesTable.name = "SalesTable";
+        expensesTable.getHeaderRowRange().values = [["Product", "Qtr1", "Qtr2", "Qtr3", "Qtr4"]];
+
+        await context.sync();
+      });
+  } catch (error) {
+    try {
+      await Excel.run(async (context) => {
+        const sheet = context.workbook.worksheets.getActiveWorksheet();
+        let range = sheet.getRange("A10");
+        range.values = [["Error"]];
+        let range1 = sheet.getRange("A11");
+        range1.values = [[error.message]];
         await context.sync();
       });
     } catch (innerError) {
