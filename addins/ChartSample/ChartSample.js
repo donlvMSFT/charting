@@ -59,10 +59,16 @@ async function test() {
         await context.sync();
       });
   } catch (error) {
-    const sheet = context.workbook.worksheets.getActiveWorksheet();
-    let range = sheet.getRange("A10");
-    range.values = [[error.message]];
-    await context.sync();
+    try {
+      await Excel.run(async (context) => {
+        const sheet = context.workbook.worksheets.getActiveWorksheet();
+        let range = sheet.getRange("A10");
+        range.values = [[error.message]];
+        await context.sync();
+      });
+    } catch (innerError) {
+      console.error("Failed to log error to Excel:", innerError);
+    }
   }
 }
   
