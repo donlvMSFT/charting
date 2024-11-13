@@ -11,27 +11,36 @@ Office.onReady((info) => {
 async function setup() {
   try {
       await Excel.run(async (context) => {
-      context.workbook.worksheets.getItemOrNullObject("Sample").delete();
-      const sheet = context.workbook.worksheets.add("Sample");
+      // context.workbook.worksheets.getItemOrNullObject("Sample").delete();
+      // const sheet = context.workbook.worksheets.add("Sample");
   
-      let expensesTable = sheet.tables.add("A1:E1", true);
-      expensesTable.name = "SalesTable";
-      expensesTable.getHeaderRowRange().values = [["Product", "Qtr1", "Qtr2", "Qtr3", "Qtr4"]];
+      // let expensesTable = sheet.tables.add("A1:E1", true);
+      // expensesTable.name = "SalesTable";
+      // expensesTable.getHeaderRowRange().values = [["Product", "Qtr1", "Qtr2", "Qtr3", "Qtr4"]];
   
-      expensesTable.rows.add(null, [
-          ["Frames", 5000, 7000, 6544, 4377],
-          ["Saddles", 400, 323, 276, 651],
-          ["Brake levers", 12000, 8766, 8456, 9812],
-          ["Chains", 1550, 1088, 692, 853],
-          ["Mirrors", 225, 600, 923, 544],
-          ["Spokes", 6005, 7634, 4589, 8765]
-      ]);
+      // expensesTable.rows.add(null, [
+      //     ["Frames", 5000, 7000, 6544, 4377],
+      //     ["Saddles", 400, 323, 276, 651],
+      //     ["Brake levers", 12000, 8766, 8456, 9812],
+      //     ["Chains", 1550, 1088, 692, 853],
+      //     ["Mirrors", 225, 600, 923, 544],
+      //     ["Spokes", 6005, 7634, 4589, 8765]
+      // ]);
   
-      sheet.getUsedRange().format.autofitColumns();
-      sheet.getUsedRange().format.autofitRows();
+      // sheet.getUsedRange().format.autofitColumns();
+      // sheet.getUsedRange().format.autofitRows();
   
-      sheet.activate();
+      // sheet.activate();
+      // await context.sync();
+      const sheet = context.workbook.worksheets.getActiveWorksheet();
+ 
+      let rangeAreas = sheet.getUsedRangeAreasOrNullObject();
+      rangeAreas.load("address");
       await context.sync();
+      console.log(rangeAreas.address);
+ 
+      rangeAreas.select();
+      console.log("Your code goes here");
       });
   } catch (error) {
     console.error(error);
