@@ -7,8 +7,8 @@ Office.onReady((info) => {
     document.getElementById("setup").onclick = setup;
     document.getElementById("test").onclick = test;
     document.getElementById("error").onclick = error;
-    $("#dl_setup").on("click", () => tryCatch(dl_setup));
-    $("#dl_shape").on("click", () => tryCatch(dl_shape));
+    document.getElementById("dl_setup").onclick = dl_setup;
+    document.getElementById("dl_shape").onclick = dl_shape;
   }
 });
 
