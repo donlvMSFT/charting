@@ -7,6 +7,8 @@ Office.onReady((info) => {
     document.getElementById("setup").onclick = setup;
     document.getElementById("test").onclick = test;
     document.getElementById("error").onclick = error;
+    $("#dl_setup").on("click", () => tryCatch(dl_setup));
+    $("#dl_shape").on("click", () => tryCatch(dl_shape));
   }
 });
 
@@ -100,5 +102,39 @@ async function error() {
       console.error("Failed to log error to Excel:", innerError);
     }
   }
+}
+
+async function dl_setup() {
+  await Excel.run(async (context) => {
+    // Get first chart on the sheet.
+    let sheet = context.workbook.worksheets.getActiveWorksheet();
+    let chart = sheet.charts.getItemAt(0);
+    await context.sync();
+    // Load points in the data series.
+    let series = chart.series.getItemAt(0);
+    // Create a new data label at point 1 in series.
+    series.points.getItemAt(1).hasDataLabel = true;
+
+    await context.sync();
+  });
+}
+
+async function dl_shape() {
+  await Excel.run(async (context) => {
+    // Get first chart on the sheet.
+    let sheet = context.workbook.worksheets.getActiveWorksheet();
+    let chart = sheet.charts.getItemAt(0);
+    await context.sync();
+    // Load points in the data series.
+    let series = chart.series.getItemAt(0);
+    let label = series.points.getItemAt(1).dataLabel;
+
+    // Set the new label properties.
+    label.set({
+      geometricShapeType: Excel.GeometricShapeType.triangle
+    });
+
+    await context.sync();
+  });
 }
   
