@@ -226,6 +226,8 @@ async function getactiveshape() {
     await context.sync();
     console.log(shape);
 
+    sheet.getRange("D1").values = [[shape]];
+
     if (!shapenull.isNullObject) {
       shapenull.load("name");
       await context.sync();
@@ -245,14 +247,17 @@ async function set_datalabel_size_multiple() {
     const chart = sheet.charts.add(Excel.ChartType.columnClustered, range);
 
     const datalabel0 = chart.series.getItemAt(0).points.getItemAt(0).dataLabel;
+    datalabel0.geometricShapeType = "Rectangle";
     datalabel0.setWidth(10);
     datalabel0.setHeight(10);
 
     const datalabel1 = chart.series.getItemAt(0).points.getItemAt(1).dataLabel;
+    datalabel1.geometricShapeType = "Rectangle";
     datalabel1.setWidth(15);
     datalabel1.setHeight(15);
 
     const datalabel2 = chart.series.getItemAt(0).points.getItemAt(2).dataLabel;
+    datalabel2.geometricShapeType = "Rectangle";
     datalabel2.setWidth(20);
     datalabel2.setHeight(20);
     await context.sync();
@@ -546,6 +551,8 @@ async function setdatalabel_newapi() {
     label1.load("geometricShapeType, showAsStickyCallout");
     await context.sync();
 
+    sheet.getRange("D1").value = [["chart.datalabels geometricShapeType: " + labels.geometricShapeType + ", callout: " + labels.showAsStickyCallout]];
+    sheet.getRange("D2").value = [["points[0].label  geometricShapeType: " + label1.geometricShapeType + ", callout: " + label1.showAsStickyCallout]];
     console.log(
       "chart.datalabels geometricShapeType: " + labels.geometricShapeType + ", callout: " + labels.showAsStickyCallout
     );
