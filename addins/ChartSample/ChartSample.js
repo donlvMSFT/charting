@@ -17,6 +17,7 @@ Office.onReady((info) => {
     document.getElementById("getactiveshape").onclick = getactiveshape;
 
     document.getElementById("testLeaderLinesAPI").onclick = testLeaderLinesAPI;
+    document.getElementById("substring").onclick = substring;
   }
 });
 
@@ -123,6 +124,24 @@ async function dl_setup() {
     // Create a new data label at point 1 in series.
     series.points.getItemAt(1).hasDataLabel = true;
 
+    await context.sync();
+  });
+}
+
+async function substring() {
+  await Excel.run(async (context) => {
+    const sheet = context.workbook.worksheets.add();
+    sheet.activate();
+    const range = sheet.getRange("A1:A3");
+    range.values = [[3], [22], [111]];
+    const chart = sheet.charts.add(Excel.ChartType.columnClustered, range);
+
+    let label = chart.series.getItemAt(0).points.getItemAt(1).dataLabel;
+    label.text = "Test substring APIs";
+    await context.sync();
+
+    let text = label.getSubstring(0, 4);
+    text.font.color = "red";
     await context.sync();
   });
 }
