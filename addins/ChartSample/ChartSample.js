@@ -14,6 +14,8 @@ Office.onReady((info) => {
     document.getElementById("set_anchor_top").onclick = set_anchor_top;
     document.getElementById("setdatalabel_newapi").onclick = setdatalabel_newapi;
     document.getElementById("getactiveshape").onclick = getactiveshape;
+
+    document.getElementById("testLeaderLinesAPI").onclick = testLeaderLinesAPI;
   }
 });
 
@@ -122,6 +124,73 @@ async function dl_setup() {
 
     await context.sync();
   });
+}
+
+async function testLeaderLinesAPI() {
+  await Excel.run(async (context) => {
+    let sheet = context.workbook.worksheets.getActiveWorksheet();
+    await context.sync();
+    if (!sheet.id) {
+      sheet = context.workbook.worksheets.add(sheetName);
+    }
+
+    sheet.activate();
+
+    const count = sheet.charts.getCount();
+    await context.sync();
+
+    if (count.value > 0) {
+      const chart = sheet.charts.getItemAt(0);
+      chart.delete();
+    }
+
+    let range = sheet.getRange("A1:C4");
+    range.values = [
+      ["Type", "Product A", "Product B"],
+      ["Q1", 15, 20],
+      ["Q2", 22, 15],
+      ["Q3", 33, 47]
+    ];
+    let chart = sheet.charts.add(Excel.ChartType.line, range);
+    chart.title.text = "Sales Quantity";
+    await context.sync();
+
+    await addLabels(context);
+
+    await changeFormat(context);
+  });
+}
+
+async function changeFormat(context) {
+  const sheet = context.workbook.worksheets.getActiveWorksheet();
+  let chart = sheet.charts.getItemAt(0);
+  let series = chart.series.getItemAt(0);
+  let seriesDataLabels = series.dataLabels;
+  let lineformat = seriesDataLabels.leaderLines.format;
+
+  lineformat.line.color = "blue";
+  lineformat.line.weight = 2;
+  lineformat.line.lineStyle = Excel.ChartLineStyle.dot;
+
+  console.log("changes leaderlines format");
+}
+
+async function addLabels(context) {
+  const sheet = context.workbook.worksheets.getActiveWorksheet();
+  let chart = sheet.charts.getItemAt(0);
+  let series = chart.series.getItemAt(0);
+  series.hasDataLabels = true;
+  series.points.load("items");
+  await context.sync();
+  series.points.items.forEach((point) => point.dataLabel.load("top"));
+  await context.sync();
+
+  series.points.items[1].dataLabel.top = series.points.items[1].dataLabel.top - 50;
+  series.points.items[2].dataLabel.top = series.points.items[2].dataLabel.top + 50;
+  series.dataLabels.geometricShapeType = Excel.GeometricShapeType.rectangle;
+  series.dataLabels.showCategoryName = true;
+  series.dataLabels.format.border.weight = 1;
+  await context.sync();
 }
 
 async function dl_shape() {
