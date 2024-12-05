@@ -235,6 +235,8 @@ async function getactiveshape() {
     } else {
       console.log("shape.isNullObject=true");
     }
+
+    await context.sync();
   });
 }
 
@@ -551,14 +553,16 @@ async function setdatalabel_newapi() {
     label1.load("geometricShapeType, showAsStickyCallout");
     await context.sync();
 
-    sheet.getRange("D1").value = [["chart.datalabels geometricShapeType: " + labels.geometricShapeType + ", callout: " + labels.showAsStickyCallout]];
-    sheet.getRange("D2").value = [["points[0].label  geometricShapeType: " + label1.geometricShapeType + ", callout: " + label1.showAsStickyCallout]];
+    sheet.getRange("D1").values = [["chart.datalabels geometricShapeType: " + labels.geometricShapeType + ", callout: " + labels.showAsStickyCallout]];
+    sheet.getRange("D2").values = [["points[0].label  geometricShapeType: " + label1.geometricShapeType + ", callout: " + label1.showAsStickyCallout]];
     console.log(
       "chart.datalabels geometricShapeType: " + labels.geometricShapeType + ", callout: " + labels.showAsStickyCallout
     );
     console.log(
       "points[0].label  geometricShapeType: " + label1.geometricShapeType + ", callout: " + label1.showAsStickyCallout
     );
+
+    await context.sync();
   });
 }
 
