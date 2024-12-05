@@ -13,6 +13,7 @@ Office.onReady((info) => {
     document.getElementById("set_datalabel_size_multiple").onclick = set_datalabel_size_multiple;
     document.getElementById("set_anchor_top").onclick = set_anchor_top;
     document.getElementById("setdatalabel_newapi").onclick = setdatalabel_newapi;
+    document.getElementById("addshape").onclick = addshape;
     document.getElementById("getactiveshape").onclick = getactiveshape;
 
     document.getElementById("testLeaderLinesAPI").onclick = testLeaderLinesAPI;
@@ -212,13 +213,17 @@ async function dl_shape() {
   });
 }
 
+async function addshape() {
+  await Excel.run(async (context) => {
+    const sheet = context.workbook.worksheets.getActiveWorksheet();
+    // sheet.activate();
+    let a = sheet.shapes.addGeometricShape(Excel.GeometricShapeType.hexagon);
+    await context.sync();
+  });
+}
 
 async function getactiveshape() {
   await Excel.run(async (context) => {
-    const sheet = context.workbook.worksheets.add();
-    sheet.activate();
-    sheet.shapes.addGeometricShape(Excel.GeometricShapeType.hexagon);
-
     const shape = context.workbook.getActiveShape();
     const shapenull = context.workbook.getActiveShapeOrNullObject();
 
@@ -226,7 +231,7 @@ async function getactiveshape() {
     await context.sync();
     console.log(shape);
 
-    sheet.getRange("D1").values = [[shape]];
+    context.workbook.worksheets.getActiveWorksheet().getRange("D1").values = [[shape.name]];
 
     if (!shapenull.isNullObject) {
       shapenull.load("name");
