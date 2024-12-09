@@ -273,6 +273,9 @@ async function testTextRuns() {
     const cellSrcTextRun1 = {
       textRuns: [
         {
+          text: "String"
+        },
+        {
           text: "Sample",
           font: {
             bold: true,
