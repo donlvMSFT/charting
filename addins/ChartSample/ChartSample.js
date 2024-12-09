@@ -18,6 +18,7 @@ Office.onReady((info) => {
 
     document.getElementById("testLeaderLinesAPI").onclick = testLeaderLinesAPI;
     document.getElementById("substring").onclick = substring;
+    document.getElementById("getTextRuns").onclick = getTextRuns;
     document.getElementById("testTextRuns").onclick = testTextRuns;
   }
 });
@@ -262,6 +263,27 @@ async function getactiveshape() {
     }
 
     await context.sync();
+  });
+}
+
+async function getTextRuns() {
+  //const sheetName: string = "TestLeaderLinesAPI";
+  await Excel.run(async (ctx) => {
+    var sheet = ctx.workbook.worksheets.getActiveWorksheet();
+
+    const cellDest = sheet.getRange("A1:A2");
+    const textRunCellProperty = cellDest.getCellProperties({
+      textRuns: true
+    });
+
+    await ctx.sync();
+
+    const cellTextRuns1 = textRunCellProperty.value[0][0].textRuns;
+    const cellTextRuns2 = textRunCellProperty.value[1][0].textRuns;
+
+    console.log(JSON.stringify(cellTextRuns1, undefined, "  "));
+
+    sheet.getRange("D2").values = [[JSON.stringify(cellTextRuns1, undefined, "  ")]];
   });
 }
 
