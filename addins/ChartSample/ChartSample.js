@@ -18,6 +18,7 @@ Office.onReady((info) => {
 
     document.getElementById("testLeaderLinesAPI").onclick = testLeaderLinesAPI;
     document.getElementById("substring").onclick = substring;
+    document.getElementById("testTextRuns").onclick = testTextRuns;
   }
 });
 
@@ -261,6 +262,71 @@ async function getactiveshape() {
     }
 
     await context.sync();
+  });
+}
+
+async function testTextRuns() {
+  //const sheetName: string = "TestLeaderLinesAPI";
+  await Excel.run(async (ctx) => {
+    var sheet = ctx.workbook.worksheets.getActiveWorksheet();
+    const cellSrc = sheet.getRange("A1:A2");
+    const cellSrcTextRun1 = {
+      textRuns: [
+        {
+          text: "Sample",
+          font: {
+            bold: true,
+            color: "#00B0F0",
+            size: 14,
+            italic: true,
+            name: "Abadi",
+            underline: "Single",
+            strikethrough: true
+          }
+        },
+        {
+          text: "1",
+          font: { subscript: true }
+        },
+        {
+          text: "String"
+        },
+        {
+          text: "2",
+          font: {
+            superscript: true,
+            color: "black",
+            tintAndShade: 0.5
+          }
+        }
+      ]
+    };
+    const cellSrcTextRun2 = {
+      textRuns: [
+        {
+          text: "",
+          font: { color: "#00B0F0" }
+        }
+      ]
+    };
+    cellSrc.clear(Excel.ClearApplyTo.all);
+    cellSrc.setCellProperties([[cellSrcTextRun1], [cellSrcTextRun2]]);
+    sheet.getUsedRange().format.autofitColumns();
+    await ctx.sync();
+
+    const cellDest = sheet.getRange("A1:A2");
+    const textRunCellProperty = cellDest.getCellProperties({
+      textRuns: true
+    });
+
+    await ctx.sync();
+
+    const cellTextRuns1 = textRunCellProperty.value[0][0].textRuns;
+    const cellTextRuns2 = textRunCellProperty.value[1][0].textRuns;
+
+    console.log(JSON.stringify(cellTextRuns1, undefined, "  "));
+
+    sheet.getRange("D2").values = [[JSON.stringify(cellTextRuns1, undefined, "  ")]];
   });
 }
 
