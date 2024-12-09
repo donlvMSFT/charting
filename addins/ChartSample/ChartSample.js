@@ -266,7 +266,7 @@ async function getactiveshape() {
   });
 }
 
-async function getTextRuns() {
+async function testTextRuns() {
   //const sheetName: string = "TestLeaderLinesAPI";
   await Excel.run(async (ctx) => {
     var sheet = ctx.workbook.worksheets.getActiveWorksheet();
@@ -287,7 +287,7 @@ async function getTextRuns() {
   });
 }
 
-async function testTextRuns() {
+async function testTextRuns1() {
   //const sheetName: string = "TestLeaderLinesAPI";
   await Excel.run(async (ctx) => {
     var sheet = ctx.workbook.worksheets.getActiveWorksheet();
